@@ -11,4 +11,4 @@ kubebuilder create webhook --group core --version v1 --kind Pod --programmatic-v
 https://kubebuilder.io/reference/webhook-for-core-types.html
 
 
-go run main.go -metrics-bind-address :8084 -health-probe-bind-address :8087 -kubeconfig /home/devendra/work/src/bitbucket.org/scalock/kube-enforcer/deployment/aqua-kube-deployment1/cluster1.yaml
+go run main.go -metrics-bind-address :8084 -health-probe-bind-address :8087 -kubeconfig <pathToConfigFile>
