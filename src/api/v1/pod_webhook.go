@@ -12,6 +12,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
+// +kubebuilder:webhook:admissionReviewVersions=v1,path=/mutate,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=vpod.kb.io,sideEffects=none
+
 type podAnnotator struct {
 	Client  client.Client
 	decoder *admission.Decoder

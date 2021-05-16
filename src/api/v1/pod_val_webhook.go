@@ -12,7 +12,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-// +kubebuilder:webhook:path=/validate-v1-pod,mutating=false,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=vpod.kb.io
+// +kubebuilder:webhook:admissionReviewVersions=v1,path=/validate,mutating=false,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=vpod.kb.io,sideEffects=none
 
 // podValidator validates Pods
 type podValidator struct {
@@ -35,15 +35,12 @@ func (v *podValidator) Handle(ctx context.Context, req admission.Request) admiss
 	}
 	log := v.Log.WithValues("kind", pod.Kind, "name", pod.Name, "namespace", pod.Namespace)
 	log.Info("Received request for validation")
-	key := "block-me"
+	key := "block"
+	value := "me"
 	anno, found := pod.Annotations[key]
-	if found {
-		return admission.Denied(fmt.Sprintf("missing annotation %s", key))
+	if found && anno == value {
+		return admission.Denied(fmt.Sprintf("Blocking due to annotation %s", key))
 	}
-	if anno != "foo" {
-		return admission.Denied(fmt.Sprintf("annotation %s did not have value %q", key, "foo"))
-	}
-
 	return admission.Allowed("")
 }
 
